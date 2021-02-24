@@ -61,21 +61,31 @@ endfunction
 
 
 " Initialize options
-" call s:init_option('rblist_global_load', 1)
+call s:init_option('rblist_levels', 4)
 
 " Initialize global commands
 command! RBListEnable   call rblist#enable()
 command! RBListDisable  call rblist#disable()
-command! RBListReload   call rblist#reload()
+command! RBListToggle   call rblist#toggle()
 
 " Initialize mappings
 nnoremap <silent> <plug>(rblist-enable)    :RBListEnable<cr>
 nnoremap <silent> <plug>(rblist-disable)   :RBListDisable<cr>
-nnoremap <silent> <plug>(rblist-reload)    :RBListReload<cr>
+nnoremap <silent> <plug>(rblist-toggle)    :RBListToggle<cr>
 
 " Apply default mappings
 call s:init_default_mappings({
+      \ '<plug>(rblist-toggle)': '<leader>rr',
       \ '<plug>(rblist-enable)': '<leader>re',
       \ '<plug>(rblist-disable)': '<leader>rd',
-      \ '<plug>(rblist-reload)': '<leader>rr',
       \})
+
+" Initialize default highlight groups
+highlight def link RBListsI0 Constant
+highlight def link RBListsI1 Identifier
+highlight def link RBListsI2 Statement
+highlight def link RBListsI3 PreProc
+highlight def link RBListsB0 Identifier
+highlight def link RBListsB1 Statement
+highlight def link RBListsB2 PreProc
+highlight def link RBListsB3 Type

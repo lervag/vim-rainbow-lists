@@ -4,41 +4,27 @@
 " Email:      karl.yngve@gmail.com
 "
 
-function! rblist#enable() abort " {{{1
-  syntax region RBListsI0 start=/^[*-]/            end=/^\%(\S\)\@=/ contains=TOP
-  syntax region RBListsI0 start=/^  \%([*-]\)\@<!/ end=/^\%(\S\)\@=/ contains=TOP
-  syntax match RBListsB0 /^\zs[*-]/ contained containedin=RBListsI0
-
-  for i in range(1, 3)
-    let indent = i*&shiftwidth
-    let contains = 'contains=TOP,' . join(map(range(i), '"RBListsI" . v:val'), ',')
-    execute printf('syntax region RBListsI%d start=/^\s\{%d}[*-]/            end=/^\%(\s\{,%d}\S\)\@=/ %s', i, indent, indent, contains)
-    execute printf('syntax region RBListsI%d start=/^\s\{%d}  \%([*-]\)\@<!/ end=/^\%(\s\{,%d}\S\)\@=/ %s', i, indent, indent, contains)
-    execute printf('syntax match RBListsB%d /^\s\{%d}[*-]/ contained containedin=RBListsI%d', i, indent, i)
-  endfor
-
-  highlight def link RBListsI0 Constant
-  highlight def link RBListsI1 Identifier
-  highlight def link RBListsI2 Statement
-  highlight def link RBListsI3 PreProc
-  highlight def link RBListsB0 Identifier
-  highlight def link RBListsB1 Statement
-  highlight def link RBListsB2 PreProc
-  highlight def link RBListsB3 Type
+function! rblist#enabled() abort " {{{1
+  return exists('b:rblist_enabled')
 endfunction
 
 " }}}1
-function! rblist#disable() abort " {{{1
-  for i in range(4)
-    execute 'syntax clear RBListsI' . i
-    execute 'syntax clear RBListsB' . i
-  endfor
-endfunction
+" {{{1 function! rblist#toggle() abort
+
+if get(s:, 'reload_guard', 1)
+  function! rblist#toggle() abort
+    if rblist#enabled()
+      call rblist#disable()
+      call rblist#reload()
+    else
+      call rblist#enable()
+    endif
+  endfunction
+endif
 
 " }}}1
+" {{{1 function! rblist#reload() abort
 
-" {{{1 function! rblist#reload()
-let s:file = expand('<sfile>')
 if get(s:, 'reload_guard', 1)
   function! rblist#reload() abort
     let s:reload_guard = 0
@@ -58,5 +44,60 @@ if get(s:, 'reload_guard', 1)
     unlet s:reload_guard
   endfunction
 endif
+
+let s:file = expand('<sfile>')
+
+" }}}1
+
+function! rblist#enable() abort " {{{1
+  if rblist#enabled() | return | endif
+
+  for i in range(g:rblist_levels)
+    call s:create_syntax_level(i)
+  endfor
+
+  let b:rblist_enabled = 1
+  unsilent echo 'rblist: enabled'
+endfunction
+
+" }}}1
+function! rblist#disable() abort " {{{1
+  if !rblist#enabled() | return | endif
+
+  for i in range(4)
+    execute 'syntax clear RBListsI' . i
+    execute 'syntax clear RBListsB' . i
+  endfor
+
+  unlet b:rblist_enabled
+  unsilent echo 'rblist: disabled'
+endfunction
+
+" }}}1
+
+function! s:create_syntax_level(i) abort " {{{1
+  let grpItem = 'RBListsI' . a:i
+  let grpBullet = 'RBListsB' . a:i
+  let contains = 'contains=TOP'
+
+  if a:i == 0
+    let re_indent = ''
+    let re_indent_neg = '\S'
+  else
+    let indent = a:i*&shiftwidth
+    let re_indent = '\s\{' . indent . '}'
+    let re_indent_neg = '\s\{,' . indent . '}\S'
+    let contains .= ',' . join(map(range(a:i), '"RBListsI" . v:val'), ',')
+  endif
+
+  let re_bullets = '[*-]'
+  let re_start = '"^' . re_indent . re_bullets . '"'
+  let re_continue = '"^' . re_indent . '\%(' . re_bullets . '\)\@<!"'
+  let match_end = 'end="^\ze' . re_indent_neg . '"'
+
+  execute 'syntax region' grpItem 'start=' . re_start    match_end contains
+  execute 'syntax region' grpItem 'start=' . re_continue match_end contains
+  execute 'syntax match' grpBullet re_start 'contained containedin=' . grpItem
+endfunction
 
 " }}}1

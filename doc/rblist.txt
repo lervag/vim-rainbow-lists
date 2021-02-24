@@ -29,20 +29,57 @@ License: MIT license {{{
 ==============================================================================
 CONTENTS                                                      *rblist-contents*
 
-  Introduction                                     |wiki-intro|
-  Mappings                                         |wiki-mappings|
-  Commands                                         |wiki-commands|
+  Introduction                                     |rblist-intro|
+  Configuration                                    |rblist-config|
+    Options                                        |rblist-config-opts|
+    Highlight groups                               |rblist-config-highlight|
 
 ==============================================================================
 INTRODUCTION                                                     *rblist-intro*
 
-This is a Vim plugin to apply nested highlighting of lists.
+This is a Vim plugin to apply nested highlighting of lists. There are three
+commands with related mappings; the names should speak for themselves:
+
+  *<plug>(rblist-enable)*    *:RBListEnable*
+  *<plug>(rblist-disable)*   *:RBListDisable*
+  *<plug>(rblist-toggle)*    *:RBListToggle*
 
 ==============================================================================
-MAPPINGS                                                      *rblist-mappings*
+CONFIGURATION                                                   *rblist-config*
 
-==============================================================================
-COMMANDS                                                      *rblist-commands*
+------------------------------------------------------------------------------
+OPTIONS                                                    *rblist-config-opts*
+
+*g:rblist_levels*
+  Set number of desired list levels to recognize.
+
+  Default: 4
+
+------------------------------------------------------------------------------
+HIGHLIGHT GROUPS                                      *rblist-config-highlight*
+
+The number of available list levels is specified with |g:rblist_levels|. To
+use more than the default number of levels (four), one must define the extra
+colors. And of course, the default colors can be changed.
+
+You can specify different colors for the various list levels with e.g. >
+
+  :highlight RBListsI0 guifg=#FF0000
+  :highlight RBListsI1 guifg=#00FF00
+  :highlight RBListsI2 guifg=#0000FF
+  :highlight RBListsI3 guifg=#FF00FF
+  :highlight RBListsI4 guifg=#00FFFF
+  :...
+
+Similarly, you can specify highlighting of the various markers, bullets, or
+numbers with: >
+
+  :highlight RBListsB0 guibg=#FF0000
+  :highlight RBListsB1 guibg=#00FF00
+  :highlight RBListsB2 guibg=#0000FF
+  :highlight RBListsB3 guibg=#FF00FF
+  :highlight RBListsB4 guibg=#00FFFF
+  :...
 
 ==============================================================================
  vim:tw=78:ts=8:ft=help:norl:
