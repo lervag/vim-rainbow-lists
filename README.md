@@ -14,11 +14,19 @@ Plug 'lervag/wiki.vim'
 ```
 
 Or use some other plugin manager:
+
 * [vundle](https://github.com/gmarik/vundle)
 * [neobundle](https://github.com/Shougo/neobundle.vim)
 * [pathogen](https://github.com/tpope/vim-pathogen)
 
 ## Usage
 
-...
+Use the following commands or mappings to enable/disable/toggle the layer
+highlighting.
+
+  Command            Mapping
+  -------            -------
+  `:RBListEnable`    `<plug>(rblist-enable)`
+  `:RBListDisable`   `<plug>(rblist-disable)`
+  `:RBListToggle`    `<plug>(rblist-toggle)`
 
