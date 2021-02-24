@@ -57,7 +57,6 @@ function! rblist#enable() abort " {{{1
   endfor
 
   let b:rblist_enabled = 1
-  unsilent echo 'rblist: enabled'
 endfunction
 
 " }}}1
@@ -70,7 +69,6 @@ function! rblist#disable() abort " {{{1
   endfor
 
   unlet b:rblist_enabled
-  unsilent echo 'rblist: disabled'
 endfunction
 
 " }}}1
