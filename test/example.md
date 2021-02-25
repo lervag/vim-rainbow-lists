@@ -29,7 +29,13 @@
      such as this.
   3. More levels, multiple lines of properly indented text
      such as this.
-3. should also work well
+3. should also work well (but indents should be three spaces per level)
+   1. More levels, multiple lines of properly indented text
+      such as this.
+   2. More levels, multiple lines of properly indented text
+      such as this.
+   3. More levels, multiple lines of properly indented text
+      such as this.
 
 > > quote level 2
 > > quote level 2
