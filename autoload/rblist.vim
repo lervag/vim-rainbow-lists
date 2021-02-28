@@ -81,21 +81,25 @@ function! s:create_syntax_level(i) abort " {{{1
   if a:i == 0
     let re_indent = ''
     let re_indent_neg = '\S'
+    let re_quote = '>\s*'
   else
     let indent = a:i*&shiftwidth
     let re_indent = '\s\{' . indent . '}'
     let re_indent_neg = '\s\{,' . indent . '}\S'
+    let re_quote = repeat('> ', a:i) . '>\s*'
     let contains .= ',' . join(map(range(a:i), '"RBListsI" . v:val'), ',')
   endif
 
-  let re_bullets = '[*-]\s'
+  let re_bullets = '\%([-*>]\|\d\+\.\)\s'
   let re_start = '"^' . re_indent . re_bullets . '"'
-  " let re_continue = '"^' . re_indent . '\%(' . re_bullets . '\)\@<!"'
   let match_end = 'end="^\ze' . re_indent_neg . '"'
 
+  execute 'syntax match' grpItem '"^' . re_quote . '.*"'
   execute 'syntax region' grpItem 'start=' . re_start    match_end contains
-  " execute 'syntax region' grpItem 'start=' . re_continue match_end contains
+
   execute 'syntax match' grpBullet re_start 'contained containedin=' . grpItem
+  execute 'syntax match' grpBullet '"^' . re_quote . '"'
+        \ 'contained containedin=' . grpItem
 endfunction
 
 " }}}1
