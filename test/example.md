@@ -1,3 +1,8 @@
+---
+title: vim-rainbow-lists test file
+date: 2021-02-25 10:35
+---
+
 * Starred lists...
   on multiple lines
   * with several levels here

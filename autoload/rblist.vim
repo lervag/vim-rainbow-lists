@@ -76,7 +76,7 @@ endfunction
 function! s:create_syntax_level(i) abort " {{{1
   let grpItem = 'RBListsI' . a:i
   let grpBullet = 'RBListsB' . a:i
-  let contains = 'contains=TOP'
+  let contains = 'contains=TOP,mkdNonListItemBlock'
 
   if a:i == 0
     let re_indent = ''
@@ -88,13 +88,13 @@ function! s:create_syntax_level(i) abort " {{{1
     let contains .= ',' . join(map(range(a:i), '"RBListsI" . v:val'), ',')
   endif
 
-  let re_bullets = '[*-]'
+  let re_bullets = '[*-]\s'
   let re_start = '"^' . re_indent . re_bullets . '"'
-  let re_continue = '"^' . re_indent . '\%(' . re_bullets . '\)\@<!"'
+  " let re_continue = '"^' . re_indent . '\%(' . re_bullets . '\)\@<!"'
   let match_end = 'end="^\ze' . re_indent_neg . '"'
 
   execute 'syntax region' grpItem 'start=' . re_start    match_end contains
-  execute 'syntax region' grpItem 'start=' . re_continue match_end contains
+  " execute 'syntax region' grpItem 'start=' . re_continue match_end contains
   execute 'syntax match' grpBullet re_start 'contained containedin=' . grpItem
 endfunction
 
