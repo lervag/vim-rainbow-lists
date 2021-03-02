@@ -81,11 +81,15 @@ call s:init_default_mappings({
       \})
 
 " Initialize default highlight groups
-highlight def link RBListsI0 Constant
-highlight def link RBListsI1 Identifier
-highlight def link RBListsI2 Statement
-highlight def link RBListsI3 PreProc
-highlight def link RBListsB0 Identifier
-highlight def link RBListsB1 Statement
-highlight def link RBListsB2 PreProc
-highlight def link RBListsB3 Type
+highlight def link RBListsO0 Constant
+highlight def link RBListsO1 Identifier
+highlight def link RBListsO2 Statement
+highlight def link RBListsO3 PreProc
+for s:i in range(g:rblist_levels)
+  execute printf('highlight def link RBListsU%d RBListsO%d', s:i, s:i)
+  execute printf('highlight def link RBListsQ%d RBListsO%d', s:i, s:i)
+endfor
+highlight def link RBListsB0 Type
+highlight def link RBListsB1 Constant
+highlight def link RBListsB2 Identifier
+highlight def link RBListsB3 Statement

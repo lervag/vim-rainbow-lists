@@ -52,8 +52,11 @@ let s:file = expand('<sfile>')
 function! rblist#enable() abort " {{{1
   if rblist#enabled() | return | endif
 
+  " for i in range(g:rblist_levels-1, 0, -1)
   for i in range(g:rblist_levels)
-    call s:create_syntax_level(i)
+    call s:enable_syntax_quotes(i)
+    call s:enable_syntax_unordered(i)
+    call s:enable_syntax_ordered(i)
   endfor
 
   let b:rblist_enabled = 1
@@ -64,7 +67,9 @@ function! rblist#disable() abort " {{{1
   if !rblist#enabled() | return | endif
 
   for i in range(4)
-    execute 'syntax clear RBListsI' . i
+    execute 'syntax clear RBListsO' . i
+    execute 'syntax clear RBListsU' . i
+    execute 'syntax clear RBListsQ' . i
     execute 'syntax clear RBListsB' . i
   endfor
 
@@ -73,33 +78,80 @@ endfunction
 
 " }}}1
 
-function! s:create_syntax_level(i) abort " {{{1
-  let grpItem = 'RBListsI' . a:i
+function! s:enable_syntax_ordered(i) abort " {{{1
+  let grpItem = 'RBListsO' . a:i
   let grpBullet = 'RBListsB' . a:i
+  let re_number = '\%(\d\+\.\)\s'
   let contains = 'contains=TOP,mkdNonListItemBlock'
 
   if a:i == 0
-    let re_indent = ''
-    let re_indent_neg = '\S'
-    let re_quote = '>\s*'
+    execute 'syntax region' grpItem
+          \ 'start="^' . re_number . '"'
+          \ 'end="^\ze\S"'
+          \ contains
+    execute 'syntax match' grpBullet
+          \ '"^' . re_number . '"'
+          \ 'contained containedin=' . grpItem
   else
+    let contains .= ',' . join(map(range(a:i), '"RBListsO" . v:val'), ',')
+
+    for indent in [a:i*&shiftwidth, a:i*3]
+      let re_start = '"^\s\{' . indent . '}' . re_number . '"'
+
+      execute 'syntax region' grpItem
+            \ 'start=' . re_start
+            \ 'end="^\ze\s\{,' . indent . '}\S"'
+            \ contains
+      execute 'syntax match' grpBullet
+            \ re_start
+            \ 'contained containedin=' . grpItem
+    endfor
+  endif
+endfunction
+
+" }}}1
+function! s:enable_syntax_unordered(i) abort " {{{1
+  let grpItem = 'RBListsU' . a:i
+  let grpBullet = 'RBListsB' . a:i
+  let re_bullets = '\%(>\|[-*]\%( \[[ Xx.]\]\)\?\)\s'
+  let contains = 'contains=TOP,mkdNonListItemBlock'
+
+  if a:i == 0
+    execute 'syntax region' grpItem
+          \ 'start="^' . re_bullets . '"'
+          \ 'end="^\ze\S"'
+          \ contains
+    execute 'syntax match' grpBullet
+          \ '"^' . re_bullets . '"'
+          \ 'contained containedin=' . grpItem
+  else
+    let contains .= ',' . join(map(range(a:i), '"RBListsO" . v:val'), ',')
     let indent = a:i*&shiftwidth
-    let re_indent = '\s\{' . indent . '}'
-    let re_indent_neg = '\s\{,' . indent . '}\S'
-    let re_quote = repeat('> ', a:i) . '>\s*'
-    let contains .= ',' . join(map(range(a:i), '"RBListsI" . v:val'), ',')
+    let re_start = '"^\s\{' . indent . '}' . re_bullets . '"'
+
+    execute 'syntax region' grpItem
+          \ 'start=' . re_start
+          \ 'end="^\ze\s\{,' . indent . '}\S"'
+          \ contains
+    execute 'syntax match' grpBullet
+          \ re_start
+          \ 'contained containedin=' . grpItem
   endif
 
-  let re_bullets = '\%([-*>]\|\d\+\.\)\s'
-  let re_start = '"^' . re_indent . re_bullets . '"'
-  let match_end = 'end="^\ze' . re_indent_neg . '"'
+  execute 'syntax cluster mkdNonListItem add=' . grpItem
+endfunction
+
+" }}}1
+function! s:enable_syntax_quotes(i) abort " {{{1
+  let grpItem = 'RBListsQ' . a:i
+  let grpBullet = 'RBListsB' . a:i
+  let re_quote = repeat('> ', a:i) . '>\s*'
 
   execute 'syntax match' grpItem '"^' . re_quote . '.*"'
-  execute 'syntax region' grpItem 'start=' . re_start    match_end contains
-
-  execute 'syntax match' grpBullet re_start 'contained containedin=' . grpItem
   execute 'syntax match' grpBullet '"^' . re_quote . '"'
         \ 'contained containedin=' . grpItem
+
+  execute 'syntax cluster mkdNonListItem add=' . grpItem
 endfunction
 
 " }}}1
