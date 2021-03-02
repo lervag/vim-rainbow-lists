@@ -62,17 +62,28 @@ The number of available list levels is specified with |g:rblist_levels|. To
 use more than the default number of levels (four), one must define the extra
 colors. And of course, the default colors can be changed.
 
-You can specify different colors for the various list levels with e.g. >
+You can specify different colors for the various list levels. There are three
+lists types recognized:
 
-  :highlight RBListsI0 guifg=#FF0000
-  :highlight RBListsI1 guifg=#00FF00
-  :highlight RBListsI2 guifg=#0000FF
-  :highlight RBListsI3 guifg=#FF00FF
-  :highlight RBListsI4 guifg=#00FFFF
+  `RBListsOi`    Ordered list
+  `RBListsUi`    Unordered list
+  `RBListsQi`    Quote
+
+Here `i` represents a number from 0 up to |g:rblist_levels| - 1.
+
+The highlighting groups of `RBListsU` and `RBListsQ` are linked to `RBListsO`,
+so to change all of the default colors, you can simply change the `RBListsO`
+groups. For example, you can do this: >
+
+  :highlight RBListsO0 guifg=#FF0000
+  :highlight RBListsO1 guifg=#00FF00
+  :highlight RBListsO2 guifg=#0000FF
+  :highlight RBListsO3 guifg=#FF00FF
+  :highlight RBListsO4 guifg=#00FFFF
   :...
 
-Similarly, you can specify highlighting of the various markers, bullets, or
-numbers with: >
+The item markers/bullets/numbers are also specifically highlighted with the
+groups `RBListsBi`, these can be changed with e.g. >
 
   :highlight RBListsB0 guibg=#FF0000
   :highlight RBListsB1 guibg=#00FF00

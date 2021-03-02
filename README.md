@@ -7,12 +7,10 @@ This is a [Vim](http://www.vim.org/) plugin to add rainbow highlighting of inden
 ## Installation
 
 If you use [vim-plug](https://github.com/junegunn/vim-plug), then add the
-following line to your `vimrc` file (note that vim-plug does not automatically
-recognize the `main` branch name, which is starting to become a popular new
-default branch):
+following line to your `vimrc` file:
 
 ```vim
-Plug 'lervag/wiki.vim', {'branch': 'main'}
+Plug 'lervag/wiki.vim'
 ```
 
 Or use some other plugin manager:
