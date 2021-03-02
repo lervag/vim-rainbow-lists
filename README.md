@@ -24,9 +24,9 @@ Or use some other plugin manager:
 Use the following commands or mappings to enable/disable/toggle the layer
 highlighting.
 
-  Command            Mapping
-  -------            -------
-  `:RBListEnable`    `<plug>(rblist-enable)`
-  `:RBListDisable`   `<plug>(rblist-disable)`
-  `:RBListToggle`    `<plug>(rblist-toggle)`
+  Command          | Mapping
+  -------          | -------
+  `:RBListEnable`  | `<plug>(rblist-enable)`
+  `:RBListDisable` | `<plug>(rblist-disable)`
+  `:RBListToggle`  | `<plug>(rblist-toggle)`
 
