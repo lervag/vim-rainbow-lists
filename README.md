@@ -2,6 +2,10 @@
 
 This is a [Vim](http://www.vim.org/) plugin to add rainbow highlighting of indented lists.
 
+  Before | After
+  ------ | -----
+  ![before](doc/before.png) | ![after](doc/after.png)
+
 # Quick Start
 
 ## Installation
