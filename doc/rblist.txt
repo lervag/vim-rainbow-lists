@@ -85,11 +85,11 @@ groups. For example, you can do this: >
 The item markers/bullets/numbers are also specifically highlighted with the
 groups `RBListsBi`, these can be changed with e.g. >
 
-  :highlight RBListsB0 guibg=#FF0000
-  :highlight RBListsB1 guibg=#00FF00
-  :highlight RBListsB2 guibg=#0000FF
-  :highlight RBListsB3 guibg=#FF00FF
-  :highlight RBListsB4 guibg=#00FFFF
+  :highlight RBListsB0 guifg=#FF0000
+  :highlight RBListsB1 guifg=#00FF00
+  :highlight RBListsB2 guifg=#0000FF
+  :highlight RBListsB3 guifg=#FF00FF
+  :highlight RBListsB4 guifg=#00FFFF
   :...
 
 ==============================================================================
