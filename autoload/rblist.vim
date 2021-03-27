@@ -52,7 +52,6 @@ let s:file = expand('<sfile>')
 function! rblist#enable() abort " {{{1
   if rblist#enabled() | return | endif
 
-  " for i in range(g:rblist_levels-1, 0, -1)
   for i in range(g:rblist_levels)
     call s:enable_syntax_quotes(i)
     call s:enable_syntax_unordered(i)
@@ -66,7 +65,7 @@ endfunction
 function! rblist#disable() abort " {{{1
   if !rblist#enabled() | return | endif
 
-  for i in range(4)
+  for i in range(g:rblist_levels)
     execute 'syntax clear RBListsO' . i
     execute 'syntax clear RBListsU' . i
     execute 'syntax clear RBListsQ' . i
