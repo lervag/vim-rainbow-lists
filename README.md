@@ -14,7 +14,7 @@ If you use [vim-plug](https://github.com/junegunn/vim-plug), then add the
 following line to your `vimrc` file:
 
 ```vim
-Plug 'lervag/vim-rainbow-lists.vim'
+Plug 'lervag/vim-rainbow-lists'
 ```
 
 Or use some other plugin manager:
